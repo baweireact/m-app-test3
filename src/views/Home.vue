@@ -1,18 +1,36 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Count :count="count"></Count>
+    <Control :onAdd="handleAdd" :onSub="handleSub"></Control>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Count from '../components/Count'
+import Control from '../components/Control'
 
 export default {
-  name: 'home',
+  computed: {
+    count() {
+      return this.$store.state.count
+    }
+  },
   components: {
-    HelloWorld
+    Count,
+    Control
+  },
+  methods: {
+    handleSub() {
+      let count = this.count - 1
+      this.$store.dispatch({ type: 'updateCount', count })
+    },
+    handleAdd(){
+      let count = this.count + 1
+      this.$store.dispatch({ type: 'updateCount', count })
+    }
+  },
+  mounted() {
+    this.$store.dispatch({ type: 'getCount' })
   }
 }
 </script>
